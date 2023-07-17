@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <link rel="icon" type="image/png" href="https://diretoaoponto-tech.com.br/icon-target.png" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+</head>
+
+<body>
+    <div class="fundo">
+        <title>Calculadora Simples</title>
+        <h1 class="nome">Calculadora simples:</h1>
+        <div class="calculadora">
+            <input type="text" id="resultado" minlength="0" maxlength="15" readonly>
+            <br>
+            <table class="ajuste">
+                <tr>
+                    <td><button id="botao-clean" class="botao-operator" onclick="clean()">C</button></td>
+                    <td><button id="botao-backspace" class="botao-operator" onclick="back()">></button>
+                    </td>
+                    <td><button id="botao-divisao" class="botao-operator" onClick="insert('/')">/</button></td>
+                    <td><button id="botao-multiplicacao" class="botao-operator" onClick="insert('*')">X</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><button id="botao-7" class="botao-numerico" onClick="insert('7')">7</button></td>
+                    <td><button id="botao-8" class="botao-numerico" onClick="insert('8')">8</button></td>
+                    <td><button id="botao-9" class="botao-numerico" onClick="insert('9')">9</button></td>
+                    <td><button id="botao-subtracao" class=" botao-operator" onClick="insert('-')">-</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><button id="botao-4" class="botao-numerico" onClick="insert('4')">4</button></td>
+                    <td><button id="botao-5" class="botao-numerico" onClick="insert('5')">5</button></td>
+                    <td><button id="botao-6" class="botao-numerico" onClick="insert('6')">6</button></td>
+                    <td><button id="botao-soma" class="botao-operator" onClick="insert('+')">+</button></td>
+                </tr>
+                <tr>
+                    <td><button id="botao-1" class="botao-numerico" onClick="insert('1')">1</button></td>
+                    <td><button id="botao-2" class="botao-numerico" onClick="insert('2')">2</button></td>
+                    <td><button id="botao-3" class="botao-numerico" onClick="insert('3')">3</button></td>
+                    <td rowspan="2"><button id="botao-igual" class="botao-operator"
+                            style="height: 106px;" onclick="calcular()">=</button></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button id="botao-0" class="botao-numerico" onClick="insert('0')"
+                            style="width: 106px;">0</button></td>
+                    <td><button id="botao-ponto" class="botao-operator" onClick="insert('.')">.</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <footer class="text-center";>
+        <div class="container pt-4">
+            <section class="mb-4">
+                <a class="btn btn-link btn-floating btn-lg text-dark m-1"
+                    href="https://www.instagram.com/kimbie.com.br/" role="button" data-mdb-ripple-color="dark"><i
+                        class="fab fa-instagram"></i
+                    ></a>
+
+                <a class="btn btn-link btn-floating btn-lg text-dark m-1"
+                    href="https://www.linkedin.com/in/raissa-kimberly-12b103246/" role="button"
+                    data-mdb-ripple-color="dark"><i class="fab fa-linkedin"></i
+                    ></a>
+
+                <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://github.com/raissakimberly"
+                    role="button" data-mdb-ripple-color="dark"><i class="fab fa-github"></i
+                    ></a>
+            </section>
+
+        </div>
+
+        <div class="text-center text-dark p-3">
+            © 2023 Todos os direitos reservados: Raissa Kimberly de Almeida.
+        </div>
+
+    </footer>
+
+    <script>
+       let isCalculating = false;
+let isResultShown = false;
+let lastResult = 0;
+let lastOperator = '';
+
+function insert(value) {
+  let resultado = document.getElementById('resultado');
+  if (resultado.value.length < 14) {
+    if (isCalculating && isResultShown) {
+      isResultShown = false;
+      resultado.value = lastResult + lastOperator + value;
+    } else {
+      resultado.value += value;
+    }
+  } else if (resultado.value.length === 14) {
+    resultado.value = resultado.value.slice(1) + value;
+  }
+}
+
+function clean() {
+  let resultado = document.getElementById('resultado');
+  resultado.value = '';
+  isCalculating = false;
+  isResultShown = false;
+  lastResult = 0;
+  lastOperator = '';
+}
+
+function back() {
+  let resultado = document.getElementById('resultado');
+  resultado.value = resultado.value.slice(0, -1);
+}
+
+function calcular() {
+  let resultado = document.getElementById('resultado');
+  if (resultado.value) {
+    let expression = resultado.value;
+    let newResult = eval(expression);
+    resultado.value = newResult;
+    isCalculating = true;
+    isResultShown = true;
+    lastResult = newResult;
+    lastOperator = '';
+  } else if (isCalculating && isResultShown) {
+    resultado.value = lastResult;
+  } else {
+    resultado.value = "0";
+  }
+}
+
+function handleKeyDown(event) {
+  const key = event.key;
+  if (key.match(/[\d/*\-+.]/)) {
+    event.preventDefault();
+    insert(key);
+  } else if (key === 'Enter') {
+    event.preventDefault();
+    calcular();
+  } else if (key === 'Escape') {
+    event.preventDefault();
+    clean();
+  }
+}
+
+document.addEventListener('keydown', handleKeyDown);
+    </script>
+</body>
+
+</html>
